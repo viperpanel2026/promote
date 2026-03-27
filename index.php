@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Viper Panel (V-Panel) — Free VPN Panel</title>
+  <meta
+    name="description"
+    content="Create your VPN account in seconds with Viper Panel, a simple and powerful Free VPN Panel designed for easy server access and quick configuration generation."
+  />
+
+  <style>
+    :root {
+      color-scheme: light dark;
+
+      --bg: #f5f7fb;
+      --bg-soft: #ffffff;
+      --surface: rgba(255, 255, 255, 0.82);
+      --surface-strong: rgba(255, 255, 255, 0.95);
+      --text: #111827;
+      --muted: #5b6475;
+      --line: rgba(17, 24, 39, 0.08);
+      --primary: #2563eb;
+      --primary-2: #7c3aed;
+      --accent: #059669;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+      --radius: 22px;
+      --radius-sm: 16px;
+      --max-width: 1120px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #09111f;
+        --bg-soft: #0d1528;
+        --surface: rgba(15, 23, 42, 0.76);
+        --surface-strong: rgba(15, 23, 42, 0.92);
+        --text: #f8fafc;
+        --muted: #c5cee0;
+        --line: rgba(255, 255, 255, 0.08);
+        --primary: #60a5fa;
+        --primary-2: #a78bfa;
+        --accent: #34d399;
+        --shadow: 0 20px 55px rgba(0, 0, 0, 0.34);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 22%),
+        radial-gradient(circle at top right, rgba(124, 58, 237, 0.12), transparent 20%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(calc(100% - 32px), var(--max-width));
+      margin-inline: auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(14px);
+      background: color-mix(in srgb, var(--bg-soft) 84%, transparent);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      flex-shrink: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #fff;
+      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
+      font-size: 1.1rem;
+    }
+
+    .brand-text {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .brand-sub {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 999px;
+      transition: 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(127, 127, 127, 0.08);
+      color: var(--text);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      background: var(--surface);
+      border-color: var(--line);
+    }
+
+    .menu-toggle {
+      display: none;
+      position: relative;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .menu-toggle span,
+    .menu-toggle::before,
+    .menu-toggle::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      width: 18px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 999px;
+      transform: translateX(-50%);
+      transition: 0.2s ease;
+    }
+
+    .menu-toggle::before {
+      top: 14px;
+    }
+
+    .menu-toggle span {
+      top: 21px;
+    }
+
+    .menu-toggle::after {
+      top: 28px;
+    }
+
+    .menu-toggle.active::before {
+      top: 21px;
+      transform: translateX(-50%) rotate(45deg);
+    }
+
+    .menu-toggle.active span {
+      opacity: 0;
+    }
+
+    .menu-toggle.active::after {
+      top: 21px;
+      transform: translateX(-50%) rotate(-45deg);
+    }
+
+    .mobile-menu {
+      display: none;
+      padding: 0 0 16px;
+    }
+
+    .mobile-menu.show {
+      display: block;
+    }
+
+    .mobile-menu-inner {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: var(--surface-strong);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .mobile-menu a {
+      padding: 12px 14px;
+      border-radius: 12px;
+      color: var(--muted);
+      background: rgba(127, 127, 127, 0.04);
+    }
+
+    .mobile-menu a:hover {
+      color: var(--text);
+      background: rgba(127, 127, 127, 0.08);
+    }
+
+    .hero {
+      padding: 78px 0 40px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      max-width: 920px;
+      margin: 0 auto;
+      text-align: center;
+      gap: 18px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 6vw, 4.9rem);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      margin: 0 auto;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 1.06rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    section {
+      padding: 34px 0;
+    }
+
+    .section-head {
+      margin-bottom: 22px;
+      text-align: center;
+    }
+
+    .section-head h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      letter-spacing: -0.04em;
+    }
+
+    .section-head p {
+      margin: 0 auto;
+      color: var(--muted);
+      max-width: 760px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .features {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .icon {
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(124, 58, 237, 0.12));
+      border: 1px solid var(--line);
+      margin-bottom: 16px;
+      font-size: 1.2rem;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 1.04rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+    }
+
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+    }
+
+    .step p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .links-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .link-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      transition: 0.18s ease;
+    }
+
+    .link-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .link-card small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+    }
+
+    .cta {
+      padding: 20px 0 92px;
+    }
+
+    .cta-box {
+      text-align: center;
+      padding: 40px 24px;
+      border-radius: 30px;
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .cta-box h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.9rem, 4vw, 3.1rem);
+      letter-spacing: -0.05em;
+    }
+
+    .cta-box p {
+      margin: 0 auto;
+      max-width: 760px;
+      color: var(--muted);
+    }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    footer {
+      padding: 22px 0 40px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    .mobile-download-bar {
+      display: none;
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 1001;
+      padding: 10px;
+      border-radius: 18px;
+      background: color-mix(in srgb, var(--bg-soft) 92%, transparent);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .mobile-download-bar .btn {
+      width: 100%;
+    }
+
+    @media (max-width: 1120px) {
+      .features {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      .features {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: inline-block;
+      }
+
+      .hero {
+        padding-top: 52px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-actions .btn {
+        display: none;
+      }
+
+      .mobile-download-bar {
+        display: block;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .btn,
+      .hero-actions .btn,
+      .cta-actions .btn {
+        width: 100%;
+      }
+
+      .card,
+      .cta-box {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .container {
+        width: min(calc(100% - 20px), var(--max-width));
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 10vw, 3rem);
+      }
+
+      .brand-text {
+        gap: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#top" class="brand">
+          <div class="brand-mark">🐍</div>
+          <div class="brand-text">
+            <span>Viper Panel</span>
+            <span class="brand-sub">(V-Panel)</span>
+          </div>
+        </a>
+
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#how">How It Works</a>
+          <a href="#community">Community</a>
+          <a href="#download">Download</a>
+        </div>
+
+        <div class="nav-actions">
+          <a
+            class="btn btn-secondary"
+            href="https://play.google.com/store/apps/details?id=com.viper.panel"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Get the App
+          </a>
+
+          <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-inner">
+          <a href="#features">Features</a>
+          <a href="#how">How It Works</a>
+          <a href="#community">Community</a>
+          <a
+            class="btn btn-primary"
+            href="https://play.google.com/store/apps/details?id=com.viper.panel"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Download on Google Play
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="container">
+      <div class="hero-grid">
+        <h1>
+          <span class="gradient-text">Viper Panel</span><br />
+          Create your VPN account in seconds.
+        </h1>
+
+        <p>
+          Viper Panel is a simple and powerful Free VPN Panel designed for easy server access,
+          quick configuration generation, and a smooth experience.
+        </p>
+
+        <div class="hero-actions">
+          <a
+            class="btn btn-secondary"
+            href="https://youtu.be/ikGnEH_nmoY?si=SEBvZHkFb0sA1G0v"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            ▶ Watch Tutorial
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="features">
+    <div class="container">
+      <div class="section-head">
+        <h2>Why use Viper Panel?</h2>
+        <p>
+          Built for speed, simplicity, and convenience, V-Panel helps users access VPN servers
+          and generate configurations without complicated steps.
+        </p>
+      </div>
+
+      <div class="grid features">
+        <article class="card">
+          <div class="icon">⚡</div>
+          <h3>Fast VPN Account Creation</h3>
+          <p>Create your VPN account quickly and start using the service in seconds.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon">🌍</div>
+          <h3>Multiple Server Locations</h3>
+          <p>Choose from different server locations for more flexible access.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon">✨</div>
+          <h3>Clean Interface</h3>
+          <p>Enjoy a modern, easy-to-use design that looks great on any device.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon">📋</div>
+          <h3>Quick Configuration Copy</h3>
+          <p>Generate and copy configurations fast without complicated manual steps.</p>
+        </article>
+
+        <article class="card">
+          <div class="icon">🛡️</div>
+          <h3>Reliable Server Access</h3>
+          <p>Connect with confidence using a panel built for practical everyday use.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="container split">
+      <div class="card">
+        <div class="section-head" style="text-align: left;">
+          <h2>How it works</h2>
+          <p>Everything is designed to be straightforward, even for first-time users.</p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <strong>Open the app</strong>
+              <p>Launch Viper Panel and access the panel instantly.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <strong>Create your account</strong>
+              <p>Generate your VPN account without complicated setup.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <strong>Copy your configuration</strong>
+              <p>Get your configuration quickly and use it right away.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">4</div>
+            <div>
+              <strong>Get started</strong>
+              <p>Connect to available servers and enjoy a smooth experience.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="community">
+        <div class="section-head" style="text-align: left;">
+          <h2>Community & support</h2>
+          <p>Stay updated, ask questions, and connect with the Viper Panel community.</p>
+        </div>
+
+        <div class="links-list">
+          <a class="link-card" href="https://t.me/vpnappfreenet" target="_blank" rel="noopener noreferrer">
+            <div>
+              <strong>Telegram Channel</strong>
+              <small>vpnappfreenet</small>
+            </div>
+            <span>↗</span>
+          </a>
+
+          <a class="link-card" href="https://t.me/ncsvpnsite" target="_blank" rel="noopener noreferrer">
+            <div>
+              <strong>Telegram Channel</strong>
+              <small>ncsvpnsite</small>
+            </div>
+            <span>↗</span>
+          </a>
+
+          <a class="link-card" href="https://t.me/ncsprovpn" target="_blank" rel="noopener noreferrer">
+            <div>
+              <strong>Telegram Channel</strong>
+              <small>ncsprovpn</small>
+            </div>
+            <span>↗</span>
+          </a>
+
+          <a class="link-card" href="https://facebook.com/groups/2433009217118591/" target="_blank" rel="noopener noreferrer">
+            <div>
+              <strong>Facebook Group</strong>
+              <small>Join discussions and updates</small>
+            </div>
+            <span>↗</span>
+          </a>
+
+          <a class="link-card" href="https://chat.whatsapp.com/IkqFcDDo4X4868sQB3Ob1c" target="_blank" rel="noopener noreferrer">
+            <div>
+              <strong>WhatsApp Community</strong>
+              <small>Support and announcements</small>
+            </div>
+            <span>↗</span>
+          </a>
+
+          <a class="link-card" href="https://youtu.be/ikGnEH_nmoY?si=SEBvZHkFb0sA1G0v" target="_blank" rel="noopener noreferrer">
+            <div>
+              <strong>Tutorial Video</strong>
+              <small>Step-by-step guide</small>
+            </div>
+            <span>↗</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="download">
+    <div class="container">
+      <div class="cta-box">
+        <h2>Start with Viper Panel today</h2>
+        <p>
+          No complicated setup. Just open the app, create your account, and get started with
+          a clean, modern experience that automatically adapts to light and dark mode.
+        </p>
+
+        <div class="cta-actions">
+          <a
+            class="btn btn-primary"
+            href="https://play.google.com/store/apps/details?id=com.viper.panel"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Download on Google Play
+          </a>
+
+          <a class="btn btn-secondary" href="#community">
+            Join the Community
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      © 2026 Viper Panel. All rights reserved.
+    </div>
+  </footer>
+
+  <div class="mobile-download-bar">
+    <a
+      class="btn btn-primary"
+      href="https://play.google.com/store/apps/details?id=com.viper.panel"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      📲 Download on Google Play
+    </a>
+  </div>
+
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    menuToggle.addEventListener("click", function () {
+      const isOpen = mobileMenu.classList.toggle("show");
+      menuToggle.classList.toggle("active", isOpen);
+      menuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+
+    document.querySelectorAll(".mobile-menu a").forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.remove("show");
+        menuToggle.classList.remove("active");
+        menuToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  </script>
+</body>
+</html>
