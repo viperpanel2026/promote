@@ -335,8 +335,44 @@
     @media (max-width: 760px) {
       .nav {
         flex-direction: column;
-        align-items: stretch;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
       }
+
+      .brand {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .brand > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .hero { padding-top: 46px; }
+
+      .hero-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .btn { width: 100%; }
+
+      .feature-grid { grid-template-columns: 1fr; }
+
+      .feature-card,
+      .tutorial-card,
+      .community-card,
+      .cta-box { padding: 22px; }
+    }
 
       .brand { justify-content: center; }
 
