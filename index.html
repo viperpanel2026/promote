@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Viper Panel (V-Panel) – Free VPN Panel</title>
+  <meta name="description" content="Create your VPN account in seconds with Viper Panel, a simple and powerful Free VPN Panel for easy server access and quick configuration generation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-soft: #0d1b2f;
+      --card: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text: #f5f8ff;
+      --muted: #afbdd6;
+      --primary: #53b3ff;
+      --primary-2: #7569ff;
+      --accent: #00d4b4;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      --radius: 22px;
+      --max-width: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(83, 179, 255, 0.18), transparent 28%),
+        radial-gradient(circle at top right, rgba(117, 105, 255, 0.22), transparent 26%),
+        linear-gradient(180deg, #08111f 0%, #0b1423 45%, #07111f 100%);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(100% - 32px, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: rgba(7, 17, 31, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+
+    .brand-badge {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 12px 30px rgba(83, 179, 255, 0.28);
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 18px 40px rgba(83, 179, 255, 0.28);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: var(--text);
+    }
+
+    .hero {
+      padding: 88px 0 54px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(83, 179, 255, 0.1);
+      color: #cfe8ff;
+      border: 1px solid rgba(83, 179, 255, 0.18);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.5rem, 5vw, 4.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 0%, #9ad8ff 40%, #8e9dff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.08rem;
+      max-width: 680px;
+      margin: 22px 0 0;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .hero-card {
+      position: relative;
+      padding: 28px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -20% -20% auto;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(0, 212, 180, 0.26), transparent 62%);
+      pointer-events: none;
+    }
+
+    .phone {
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.14);
+      padding: 18px;
+      background: linear-gradient(180deg, #0a1528 0%, #0e1a31 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 16px 40px rgba(0,0,0,0.35);
+    }
+
+    .phone-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-bottom: 18px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(0,212,180,0.1);
+      color: #8bf0dc;
+      border: 1px solid rgba(0,212,180,0.18);
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(0, 212, 180, 0.12);
+    }
+
+    .server-list {
+      margin-top: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .server-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .server-item strong {
+      display: block;
+      font-size: 0.98rem;
+    }
+
+    .server-item span {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .badge {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(83, 179, 255, 0.12);
+      color: #c6e7ff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .stat {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.35rem;
+      margin-bottom: 6px;
+    }
+
+    .section {
+      padding: 44px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 28px;
+    }
+
+    .section-title h2 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 3vw, 3rem);
+      letter-spacing: -0.03em;
+    }
+
+    .section-title p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 18px;
+    }
+
+    .feature-card,
+    .community-card,
+    .tutorial-card,
+    .cta-box {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .feature-card {
+      padding: 24px;
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, rgba(83,179,255,0.18), rgba(117,105,255,0.18));
+      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 1.4rem;
+    }
+
+    .feature-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .tutorial-card,
+    .community-card,
+    .cta-box {
+      padding: 28px;
+    }
+
+    .tutorial-card h3,
+    .community-card h3,
+    .cta-box h3 {
+      margin: 0 0 10px;
+      font-size: 1.35rem;
+    }
+
+    .tutorial-card p,
+    .community-card p,
+    .cta-box p {
+      margin: 0 0 18px;
+      color: var(--muted);
+    }
+
+    .community-links {
+      display: grid;
+      gap: 12px;
+    }
+
+    .community-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .community-link:hover {
+      transform: translateY(-2px);
+      border-color: rgba(83, 179, 255, 0.3);
+    }
+
+    .community-link small {
+      color: var(--muted);
+      display: block;
+      margin-top: 2px;
+    }
+
+    .cta-box {
+      text-align: center;
+      background: linear-gradient(135deg, rgba(83,179,255,0.14), rgba(117,105,255,0.14));
+    }
+
+    footer {
+      padding: 26px 0 46px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 1100px) {
+      .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-grid,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .hero {
+        padding-top: 54px;
+      }
+
+      .feature-grid,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a href="#home" class="brand">
+        <div class="brand-badge">VP</div>
+        <div>
+          <div>Viper Panel</div>
+          <small style="color: var(--muted); font-weight: 600;">V-Panel</small>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#tutorial">Tutorial</a>
+        <a href="#community">Community</a>
+        <a href="https://play.google.com/store/apps/details?id=com.viper.panel" class="btn btn-primary" target="_blank" rel="noopener">Download App</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">🚀 New App Released</div>
+          <h1><span class="gradient-text">Viper Panel</span><br>Free VPN account creation made simple.</h1>
+          <p>
+            Create your VPN account in seconds with <strong>Viper Panel (V-Panel)</strong>, a simple and powerful Free VPN Panel built for easy server access, quick configuration generation, and a smooth user experience.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.viper.panel" target="_blank" rel="noopener">📲 Download on Google Play</a>
+            <a class="btn btn-secondary" href="#tutorial">▶ Watch Tutorial</a>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="phone">
+            <div class="phone-top">
+              <strong>V-Panel Dashboard</strong>
+              <span>Secure Access</span>
+            </div>
+
+            <div class="status-pill">
+              <span class="dot"></span>
+              Fast Account Creation
+            </div>
+
+            <div class="server-list">
+              <div class="server-item">
+                <div>
+                  <strong>Singapore Server</strong>
+                  <span>Low latency • Stable access</span>
+                </div>
+                <div class="badge">Ready</div>
+              </div>
+              <div class="server-item">
+                <div>
+                  <strong>Japan Server</strong>
+                  <span>Quick setup • Smooth connection</span>
+                </div>
+                <div class="badge">Online</div>
+              </div>
+              <div class="server-item">
+                <div>
+                  <strong>US Server</strong>
+                  <span>Reliable access • Easy config</span>
+                </div>
+                <div class="badge">Active</div>
+              </div>
+            </div>
+
+            <div class="stats">
+              <div class="stat">
+                <strong>Fast</strong>
+                <span>Setup flow</span>
+              </div>
+              <div class="stat">
+                <strong>Clean</strong>
+                <span>User interface</span>
+              </div>
+              <div class="stat">
+                <strong>Simple</strong>
+                <span>Config copy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-title">
+          <h2>Why use Viper Panel?</h2>
+          <p>No complicated setup. Just open the app, create your account, and get started.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Fast Account Creation</h3>
+            <p>Create your VPN account in seconds with a quick and efficient process.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">🌍</div>
+            <h3>Multiple Server Locations</h3>
+            <p>Access different server options for better flexibility and convenience.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Clean Interface</h3>
+            <p>Enjoy a modern and easy-to-use design built for a smooth experience.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">📋</div>
+            <h3>Quick Configuration Copy</h3>
+            <p>Copy your generated configuration easily without complicated steps.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3>Reliable Server Access</h3>
+            <p>Connect with confidence using a panel designed for dependable access.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tutorial">
+      <div class="container two-col">
+        <div class="tutorial-card">
+          <h3>Getting started is easy</h3>
+          <p>Watch the step-by-step tutorial and learn how to create your VPN account and use Viper Panel quickly.</p>
+          <a class="btn btn-primary" href="https://youtu.be/ikGnEH_nmoY?si=SEBvZHkFb0sA1G0v" target="_blank" rel="noopener">▶ Watch Tutorial</a>
+        </div>
+
+        <div class="cta-box">
+          <h3>Ready to try V-Panel?</h3>
+          <p>Download the app now and start creating your VPN account in just a few taps.</p>
+          <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.viper.panel" target="_blank" rel="noopener">📲 Get it on Google Play</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="community">
+      <div class="container">
+        <div class="section-title">
+          <h2>Join the community</h2>
+          <p>Stay updated, ask for support, and connect with other users through our official channels.</p>
+        </div>
+
+        <div class="community-card">
+          <h3>Updates and support channels</h3>
+          <p>Choose your preferred platform and become part of the Viper Panel community.</p>
+
+          <div class="community-links">
+            <a class="community-link" href="https://t.me/vpnappfreenet" target="_blank" rel="noopener">
+              <div>
+                <strong>Telegram Channel 1</strong>
+                <small>t.me/vpnappfreenet</small>
+              </div>
+              <span>Open ↗</span>
+            </a>
+
+            <a class="community-link" href="https://t.me/ncsvpnsite" target="_blank" rel="noopener">
+              <div>
+                <strong>Telegram Channel 2</strong>
+                <small>t.me/ncsvpnsite</small>
+              </div>
+              <span>Open ↗</span>
+            </a>
+
+            <a class="community-link" href="https://t.me/ncsprovpn" target="_blank" rel="noopener">
+              <div>
+                <strong>Telegram Channel 3</strong>
+                <small>t.me/ncsprovpn</small>
+              </div>
+              <span>Open ↗</span>
+            </a>
+
+            <a class="community-link" href="https://facebook.com/groups/2433009217118591/" target="_blank" rel="noopener">
+              <div>
+                <strong>Facebook Group</strong>
+                <small>facebook.com/groups/2433009217118591</small>
+              </div>
+              <span>Open ↗</span>
+            </a>
+
+            <a class="community-link" href="https://chat.whatsapp.com/IkqFcDDo4X4868sQB3Ob1c" target="_blank" rel="noopener">
+              <div>
+                <strong>WhatsApp Community</strong>
+                <small>chat.whatsapp.com/IkqFcDDo4X4868sQB3Ob1c</small>
+              </div>
+              <span>Open ↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2026 Viper Panel (V-Panel). All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>
