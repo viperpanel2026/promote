@@ -271,7 +271,11 @@ footer{
   <div class="container">
     <h2>Contact Us</h2>
 
-    <form class="contact-form" action="mailto:viperpanel2026@gmail.com" method="post" enctype="text/plain">
+    <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
+      <input type="hidden" name="subject" value="New Viper Panel Contact Message">
+      <input type="hidden" name="from_name" value="Viper Panel Website">
+      <input type="hidden" name="redirect" value="https://yourusername.github.io/thank-you.html">
       <label>Name (required)</label>
       <input type="text" name="name" required>
 
@@ -279,7 +283,7 @@ footer{
       <input type="email" name="email" required>
 
       <label>Message</label>
-      <textarea name="message" rows="6"></textarea>
+      <textarea name="message" rows="6" required></textarea>
 
       <button type="submit" class="btn btn-primary">Contact Us</button>
     </form>
@@ -289,6 +293,14 @@ footer{
 <footer>
   © 2026 Viper Panel
 </footer>
+
+<!--
+GitHub Pages setup:
+1. Go to https://web3forms.com/
+2. Create a free access key for viperpanel2026@gmail.com
+3. Replace YOUR_WEB3FORMS_ACCESS_KEY with your real key
+4. Replace https://yourusername.github.io/thank-you.html with your real GitHub Pages success page, or remove that hidden input
+-->
 
 </body>
 </html>
