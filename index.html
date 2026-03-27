@@ -13,35 +13,35 @@
     :root {
       color-scheme: light dark;
 
-      --bg: #f6f8fc;
+      --bg: #f5f7fb;
       --bg-soft: #ffffff;
       --surface: rgba(255, 255, 255, 0.82);
       --surface-strong: rgba(255, 255, 255, 0.95);
-      --text: #101828;
-      --muted: #475467;
-      --line: rgba(16, 24, 40, 0.08);
+      --text: #111827;
+      --muted: #5b6475;
+      --line: rgba(17, 24, 39, 0.08);
       --primary: #2563eb;
       --primary-2: #7c3aed;
       --accent: #059669;
-      --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
       --radius: 22px;
       --radius-sm: 16px;
-      --max-width: 1180px;
+      --max-width: 1120px;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #09101f;
-        --bg-soft: #0d152b;
-        --surface: rgba(15, 23, 42, 0.72);
+        --bg: #09111f;
+        --bg-soft: #0d1528;
+        --surface: rgba(15, 23, 42, 0.76);
         --surface-strong: rgba(15, 23, 42, 0.92);
         --text: #f8fafc;
-        --muted: #c0cae0;
+        --muted: #c5cee0;
         --line: rgba(255, 255, 255, 0.08);
         --primary: #60a5fa;
         --primary-2: #a78bfa;
         --accent: #34d399;
-        --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        --shadow: 0 20px 55px rgba(0, 0, 0, 0.34);
       }
     }
 
@@ -58,20 +58,15 @@
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 24%),
-        radial-gradient(circle at top right, rgba(124, 58, 237, 0.12), transparent 22%),
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 22%),
+        radial-gradient(circle at top right, rgba(124, 58, 237, 0.12), transparent 20%),
         linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
       line-height: 1.6;
     }
 
     a {
-      color: inherit;
       text-decoration: none;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
+      color: inherit;
     }
 
     .container {
@@ -82,9 +77,9 @@
     .nav {
       position: sticky;
       top: 0;
-      z-index: 50;
+      z-index: 1000;
       backdrop-filter: blur(14px);
-      background: color-mix(in srgb, var(--bg-soft) 82%, transparent);
+      background: color-mix(in srgb, var(--bg-soft) 84%, transparent);
       border-bottom: 1px solid var(--line);
     }
 
@@ -102,6 +97,7 @@
       gap: 12px;
       font-weight: 800;
       letter-spacing: 0.2px;
+      flex-shrink: 0;
     }
 
     .brand-mark {
@@ -110,9 +106,9 @@
       border-radius: 14px;
       display: grid;
       place-items: center;
-      color: white;
       background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      box-shadow: 0 14px 30px rgba(37, 99, 235, 0.25);
+      color: #fff;
+      box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
       font-size: 1.1rem;
     }
 
@@ -136,8 +132,14 @@
     }
 
     .nav-links a:hover {
-      color: var(--text);
       background: rgba(127, 127, 127, 0.08);
+      color: var(--text);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .btn {
@@ -152,6 +154,7 @@
       font-weight: 700;
       transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
       text-align: center;
+      cursor: pointer;
     }
 
     .btn:hover {
@@ -159,7 +162,7 @@
     }
 
     .btn-primary {
-      color: white;
+      color: #fff;
       background: linear-gradient(135deg, var(--primary), var(--primary-2));
       box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
     }
@@ -170,34 +173,100 @@
       border-color: var(--line);
     }
 
+    .menu-toggle {
+      display: none;
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .menu-toggle span,
+    .menu-toggle::before,
+    .menu-toggle::after {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 2px;
+      margin: 0 auto;
+      background: currentColor;
+      border-radius: 999px;
+      transition: 0.2s ease;
+    }
+
+    .menu-toggle span {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .menu-toggle::before {
+      margin-bottom: 5px;
+    }
+
+    .menu-toggle::after {
+      margin-top: 5px;
+    }
+
+    .mobile-menu {
+      display: none;
+      padding: 0 0 16px;
+    }
+
+    .mobile-menu-inner {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: var(--surface-strong);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .mobile-menu a {
+      padding: 12px 14px;
+      border-radius: 12px;
+      color: var(--muted);
+      background: rgba(127, 127, 127, 0.04);
+    }
+
+    .mobile-menu a:hover {
+      color: var(--text);
+      background: rgba(127, 127, 127, 0.08);
+    }
+
     .hero {
-      padding: 72px 0 38px;
+      padding: 78px 0 40px;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
-      gap: 28px;
-      align-items: center;
+      grid-template-columns: 1fr;
+      max-width: 920px;
+      margin: auto;
+      text-align: center;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 10px;
+      margin: 0 auto 18px;
       padding: 8px 14px;
       border-radius: 999px;
       background: var(--surface);
       border: 1px solid var(--line);
       color: var(--muted);
       font-size: 0.94rem;
-      margin-bottom: 18px;
       box-shadow: var(--shadow);
     }
 
     .hero h1 {
       margin: 0 0 16px;
-      font-size: clamp(2.4rem, 5vw, 4.9rem);
+      font-size: clamp(2.4rem, 6vw, 4.9rem);
       line-height: 1.02;
       letter-spacing: -0.05em;
     }
@@ -210,22 +279,24 @@
     }
 
     .hero p {
-      margin: 0;
-      max-width: 720px;
-      font-size: 1.06rem;
+      margin: 0 auto;
+      max-width: 760px;
       color: var(--muted);
+      font-size: 1.06rem;
     }
 
     .hero-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
+      justify-content: center;
       margin-top: 26px;
     }
 
     .hero-points {
       display: flex;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 10px;
       margin-top: 22px;
     }
@@ -240,114 +311,23 @@
       box-shadow: var(--shadow);
     }
 
-    .hero-card {
-      position: relative;
-      border-radius: 28px;
-      padding: 20px;
-      background: var(--surface-strong);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .hero-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at top right, rgba(124, 58, 237, 0.12), transparent 28%),
-        radial-gradient(circle at bottom left, rgba(37, 99, 235, 0.12), transparent 28%);
-      pointer-events: none;
-    }
-
-    .phone {
-      position: relative;
-      z-index: 1;
-      border-radius: 24px;
-      padding: 16px;
-      background: color-mix(in srgb, var(--bg-soft) 90%, transparent);
-      border: 1px solid var(--line);
-    }
-
-    .phone-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 16px;
-      color: var(--muted);
-      font-size: 0.94rem;
-    }
-
-    .screen-card {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 12px;
-    }
-
-    .screen-title {
-      margin: 0 0 6px;
-      font-weight: 800;
-    }
-
-    .screen-sub {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .server-list {
-      display: grid;
-      gap: 10px;
-      margin: 16px 0;
-    }
-
-    .server {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: var(--surface-strong);
-      border: 1px solid var(--line);
-    }
-
-    .server-status {
-      color: var(--accent);
-      font-weight: 800;
-      font-size: 0.9rem;
-    }
-
-    .mini-btn {
-      width: 100%;
-      border: none;
-      border-radius: 14px;
-      padding: 14px 16px;
-      font-weight: 800;
-      color: white;
-      background: linear-gradient(135deg, var(--primary), var(--primary-2));
-      cursor: pointer;
-    }
-
     section {
       padding: 34px 0;
     }
 
     .section-head {
       margin-bottom: 22px;
+      text-align: center;
     }
 
     .section-head h2 {
       margin: 0 0 10px;
-      font-size: clamp(1.75rem, 3vw, 2.7rem);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
       letter-spacing: -0.04em;
     }
 
     .section-head p {
-      margin: 0;
+      margin: 0 auto;
       color: var(--muted);
       max-width: 760px;
     }
@@ -421,7 +401,7 @@
       display: grid;
       place-items: center;
       font-weight: 800;
-      color: white;
+      color: #fff;
       background: linear-gradient(135deg, var(--primary), var(--primary-2));
     }
 
@@ -459,7 +439,7 @@
     }
 
     .cta {
-      padding: 20px 0 74px;
+      padding: 20px 0 92px;
     }
 
     .cta-box {
@@ -496,6 +476,26 @@
       border-top: 1px solid var(--line);
       color: var(--muted);
       font-size: 0.95rem;
+      text-align: center;
+    }
+
+    .mobile-download-bar {
+      display: none;
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 1001;
+      padding: 10px;
+      border-radius: 18px;
+      background: color-mix(in srgb, var(--bg-soft) 92%, transparent);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .mobile-download-bar .btn {
+      width: 100%;
     }
 
     @media (max-width: 1120px) {
@@ -505,7 +505,6 @@
     }
 
     @media (max-width: 900px) {
-      .hero-grid,
       .split {
         grid-template-columns: 1fr;
       }
@@ -518,13 +517,32 @@
         display: none;
       }
 
+      .menu-toggle {
+        display: inline-grid;
+        place-items: center;
+      }
+
       .nav-inner {
         min-height: auto;
         padding: 14px 0;
       }
 
       .hero {
-        padding-top: 48px;
+        padding-top: 52px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-actions .btn {
+        display: none;
+      }
+
+      .mobile-menu.show {
+        display: block;
+      }
+
+      .mobile-download-bar {
+        display: block;
       }
     }
 
@@ -539,7 +557,6 @@
         width: 100%;
       }
 
-      .hero-card,
       .card,
       .cta-box {
         padding-left: 18px;
@@ -558,30 +575,55 @@
 </head>
 <body>
   <nav class="nav">
-    <div class="container nav-inner">
-      <a href="#top" class="brand">
-        <div class="brand-mark">🐍</div>
-        <div>
-          Viper Panel
-          <span class="brand-sub">(V-Panel)</span>
-        </div>
-      </a>
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#top" class="brand">
+          <div class="brand-mark">🐍</div>
+          <div>
+            Viper Panel
+            <span class="brand-sub">(V-Panel)</span>
+          </div>
+        </a>
 
-      <div class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#how">How It Works</a>
-        <a href="#community">Community</a>
-        <a href="#download">Download</a>
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#how">How It Works</a>
+          <a href="#community">Community</a>
+          <a href="#download">Download</a>
+        </div>
+
+        <div class="nav-actions">
+          <a
+            class="btn btn-secondary"
+            href="https://play.google.com/store/apps/details?id=com.viper.panel"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Get the App
+          </a>
+
+          <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+          </button>
+        </div>
       </div>
 
-      <a
-        class="btn btn-secondary"
-        href="https://play.google.com/store/apps/details?id=com.viper.panel"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Get the App
-      </a>
+      <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-inner">
+          <a href="#features">Features</a>
+          <a href="#how">How It Works</a>
+          <a href="#community">Community</a>
+          <a href="#download">Download</a>
+          <a
+            class="btn btn-primary"
+            href="https://play.google.com/store/apps/details?id=com.viper.panel"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Download on Google Play
+          </a>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -597,7 +639,7 @@
 
         <p>
           Viper Panel is a simple and powerful Free VPN Panel designed for easy server access,
-          quick configuration generation, and a smooth setup experience across all devices.
+          quick configuration generation, and a smooth experience across mobile, tablet, and desktop devices.
         </p>
 
         <div class="hero-actions">
@@ -625,17 +667,19 @@
           <div class="chip">Fast account creation</div>
           <div class="chip">Multiple server locations</div>
           <div class="chip">Quick config copy</div>
-          <div class="chip">Responsive on all devices</div>
+          <div class="chip">Auto light/dark mode</div>
         </div>
       </div>
+    </div>
+  </header>
 
   <section id="features">
     <div class="container">
       <div class="section-head">
         <h2>Why use Viper Panel?</h2>
         <p>
-          Built for speed, clarity, and convenience, V-Panel makes it easy to create VPN accounts,
-          access servers, and generate configurations without unnecessary steps.
+          Built for speed, simplicity, and convenience, V-Panel helps users access VPN servers
+          and generate configurations without complicated steps.
         </p>
       </div>
 
@@ -655,7 +699,7 @@
         <article class="card">
           <div class="icon">✨</div>
           <h3>Clean Interface</h3>
-          <p>Enjoy a modern, easy-to-use design that feels simple on any screen size.</p>
+          <p>Enjoy a modern, easy-to-use design that looks great on any device.</p>
         </article>
 
         <article class="card">
@@ -676,7 +720,7 @@
   <section id="how">
     <div class="container split">
       <div class="card">
-        <div class="section-head">
+        <div class="section-head" style="text-align:left;">
           <h2>How it works</h2>
           <p>Everything is designed to be straightforward, even for first-time users.</p>
         </div>
@@ -717,7 +761,7 @@
       </div>
 
       <div class="card" id="community">
-        <div class="section-head">
+        <div class="section-head" style="text-align:left;">
           <h2>Community & support</h2>
           <p>Stay updated, ask questions, and connect with the Viper Panel community.</p>
         </div>
@@ -780,8 +824,8 @@
       <div class="cta-box">
         <h2>Start with Viper Panel today</h2>
         <p>
-          No complicated setup. Just open the app, create your account, and get started with a clean,
-          modern experience that automatically matches light or dark mode.
+          No complicated setup. Just open the app, create your account, and get started with
+          a clean, modern experience that automatically adapts to light and dark mode.
         </p>
 
         <div class="cta-actions">
@@ -807,5 +851,33 @@
       © 2026 Viper Panel (V-Panel). Promotional landing page.
     </div>
   </footer>
+
+  <div class="mobile-download-bar">
+    <a
+      class="btn btn-primary"
+      href="https://play.google.com/store/apps/details?id=com.viper.panel"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      📲 Download on Google Play
+    </a>
+  </div>
+
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    menuToggle.addEventListener("click", function () {
+      const isOpen = mobileMenu.classList.toggle("show");
+      menuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+
+    document.querySelectorAll(".mobile-menu a").forEach((link) => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.remove("show");
+        menuToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  </script>
 </body>
 </html>
