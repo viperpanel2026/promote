@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Viper Panel</title>
+  <meta name="description" content="Download Viper Panel, join the community, and create your VPN account in seconds." />
+  <style>
+    :root{
+      color-scheme: light dark;
+      --bg:#f3f7ff;
+      --bg-soft:#eef3ff;
+      --surface:#ffffff;
+      --surface-2:rgba(255,255,255,0.72);
+      --text:#0f172a;
+      --muted:#475569;
+      --border:rgba(148,163,184,0.28);
+      --primary:#3b82f6;
+      --primary-2:#7c3aed;
+      --accent:#06b6d4;
+      --success:#10b981;
+      --shadow:0 20px 50px rgba(15,23,42,0.10);
+      --shadow-soft:0 10px 30px rgba(59,130,246,0.12);
+      --radius:22px;
+      --radius-sm:14px;
+      --max:1180px;
+    }
+
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#081120;
+        --bg-soft:#0d1830;
+        --surface:#0f1b34;
+        --surface-2:rgba(15,27,52,0.72);
+        --text:#eef4ff;
+        --muted:#bfd0ea;
+        --border:rgba(148,163,184,0.18);
+        --primary:#60a5fa;
+        --primary-2:#a78bfa;
+        --accent:#22d3ee;
+        --success:#34d399;
+        --shadow:0 24px 54px rgba(0,0,0,0.35);
+        --shadow-soft:0 10px 30px rgba(96,165,250,0.16);
+      }
+    }
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+    body{
+      margin:0;
+      font-family:Inter, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(59,130,246,0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(124,58,237,0.16), transparent 26%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+      overflow-x:hidden;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    img{ max-width:100%; display:block; }
+    .container{ width:min(92%, var(--max)); margin:0 auto; }
+    .section{ padding:84px 0; position:relative; }
+
+    .nav{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:blur(16px);
+      background:rgba(255,255,255,0.55);
+      border-bottom:1px solid var(--border);
+    }
+
+    @media (prefers-color-scheme: dark){
+      .nav{ background:rgba(8,17,32,0.55); }
+    }
+
+    .nav-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      padding:16px 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+
+    .brand-mark{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      color:#fff;
+      background:linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow:var(--shadow-soft);
+    }
+
+    .nav-links{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-weight:600;
+      font-size:14px;
+    }
+
+    .hero{
+      padding:72px 0 40px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:34px;
+      align-items:center;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border:1px solid var(--border);
+      background:var(--surface-2);
+      border-radius:999px;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:700;
+      box-shadow:var(--shadow-soft);
+      animation:fadeUp .8s ease both;
+    }
+
+    .eyebrow-dot{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      background:var(--success);
+      box-shadow:0 0 0 6px rgba(16,185,129,0.12);
+    }
+
+    h1{
+      font-size:clamp(40px, 6vw, 72px);
+      line-height:1.02;
+      margin:18px 0 18px;
+      letter-spacing:-1.8px;
+      animation:fadeUp .9s ease both;
+    }
+
+    .gradient-text{
+      background:linear-gradient(90deg, var(--primary), var(--primary-2), var(--accent));
+      background-size:200% auto;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation:gradientShift 5s linear infinite;
+    }
+
+    .hero-copy{
+      font-size:18px;
+      line-height:1.7;
+      color:var(--muted);
+      max-width:640px;
+      animation:fadeUp 1s ease both;
+    }
+
+    .cta-row{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:28px;
+      animation:fadeUp 1.1s ease both;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:15px 22px;
+      border-radius:16px;
+      font-weight:800;
+      transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+      position:relative;
+      overflow:hidden;
+      border:1px solid transparent;
+      min-width:180px;
+    }
+
+    .btn::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.35), transparent 70%);
+      transform:translateX(-130%);
+      transition:transform .7s ease;
+    }
+
+    .btn:hover::after{ transform:translateX(130%); }
+    .btn:hover{ transform:translateY(-3px); }
+
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow:var(--shadow-soft);
+    }
+
+    .btn-secondary{
+      color:var(--text);
+      background:var(--surface-2);
+      border-color:var(--border);
+    }
+
+    .hero-panel{
+      position:relative;
+      background:var(--surface-2);
+      border:1px solid var(--border);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      padding:24px;
+      backdrop-filter:blur(18px);
+      animation:floatCard 5s ease-in-out infinite;
+    }
+
+    .hero-panel::before,
+    .hero-panel::after{
+      content:"";
+      position:absolute;
+      border-radius:50%;
+      filter:blur(8px);
+      z-index:-1;
+    }
+
+    .hero-panel::before{
+      width:140px; height:140px;
+      background:rgba(59,130,246,0.18);
+      top:-30px; right:-20px;
+    }
+
+    .hero-panel::after{
+      width:120px; height:120px;
+      background:rgba(124,58,237,0.18);
+      bottom:-20px; left:-10px;
+    }
+
+    .panel-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:20px;
+    }
+
+    .status-pill{
+      font-size:12px;
+      font-weight:800;
+      color:var(--success);
+      background:rgba(16,185,129,0.12);
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(16,185,129,0.18);
+    }
+
+    .panel-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      margin-top:18px;
+    }
+
+    .mini-card,
+    .qr-card,
+    .community-card,
+    .form-shell,
+    .feature-card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow-soft);
+      border-radius:22px;
+    }
+
+    .mini-card{
+      padding:18px;
+    }
+
+    .metric{
+      font-size:30px;
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    .muted{ color:var(--muted); }
+
+    .hero-bottom{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:16px;
+      margin-top:16px;
+      align-items:stretch;
+    }
+
+    .qr-card{
+      padding:18px;
+      min-width:200px;
+      text-align:center;
+    }
+
+    .qr-card img{
+      width:132px;
+      height:132px;
+      margin:10px auto 12px;
+      border-radius:16px;
+      background:#fff;
+      padding:8px;
+      border:1px solid rgba(148,163,184,0.2);
+    }
+
+    .section-title{
+      text-align:center;
+      margin:0 0 14px;
+      font-size:clamp(28px, 4vw, 42px);
+      letter-spacing:-1px;
+    }
+
+    .section-copy{
+      text-align:center;
+      max-width:720px;
+      margin:0 auto 34px;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:17px;
+    }
+
+    .features-grid,
+    .community-grid{
+      display:grid;
+      gap:18px;
+    }
+
+    .features-grid{ grid-template-columns:repeat(3, 1fr); }
+    .community-grid{ grid-template-columns:repeat(5, 1fr); }
+
+    .feature-card{
+      padding:24px;
+      transition:transform .25s ease, box-shadow .25s ease;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .feature-card::before{
+      content:"";
+      position:absolute;
+      inset:0 auto auto 0;
+      width:100%;
+      height:4px;
+      background:linear-gradient(90deg, var(--primary), var(--primary-2), var(--accent));
+    }
+
+    .feature-card:hover,
+    .community-card:hover{
+      transform:translateY(-6px);
+      box-shadow:var(--shadow);
+    }
+
+    .icon-wrap{
+      width:56px;
+      height:56px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      margin-bottom:18px;
+      background:linear-gradient(135deg, rgba(59,130,246,0.16), rgba(124,58,237,0.16));
+    }
+
+    .feature-card h3{
+      margin:0 0 10px;
+      font-size:20px;
+    }
+
+    .feature-card p,
+    .community-card p,
+    .form-shell p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    .community-card{
+      padding:20px;
+      text-align:center;
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+
+    .community-icon{
+      width:52px;
+      height:52px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      margin:0 auto 14px;
+      background:var(--bg-soft);
+    }
+
+    .contact-wrap{
+      display:grid;
+      grid-template-columns:.9fr 1.1fr;
+      gap:22px;
+      align-items:start;
+    }
+
+    .contact-side,
+    .form-shell{
+      padding:28px;
+    }
+
+    .check-list{
+      display:grid;
+      gap:12px;
+      margin-top:22px;
+    }
+
+    .check-item{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      color:var(--muted);
+      line-height:1.65;
+    }
+
+    .check-badge{
+      flex:0 0 24px;
+      width:24px;
+      height:24px;
+      border-radius:999px;
+      display:grid;
+      place-items:center;
+      font-size:12px;
+      font-weight:900;
+      color:#fff;
+      background:linear-gradient(135deg, var(--primary), var(--accent));
+      margin-top:2px;
+    }
+
+    .contact-form{
+      display:grid;
+      gap:14px;
+      margin-top:12px;
+    }
+
+    .contact-form label{
+      display:block;
+      margin:0 0 8px;
+      font-size:14px;
+      font-weight:700;
+      color:var(--muted);
+    }
+
+    .contact-form input,
+    .contact-form textarea{
+      width:100%;
+      padding:14px 16px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:var(--text);
+      font:inherit;
+      transition:border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus{
+      outline:none;
+      border-color:var(--primary);
+      box-shadow:0 0 0 4px rgba(59,130,246,0.12);
+      transform:translateY(-1px);
+    }
+
+    footer{
+      padding:28px 0 46px;
+      color:var(--muted);
+      text-align:center;
+      font-size:14px;
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(24px);
+      transition:opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible{
+      opacity:1;
+      transform:none;
+    }
+
+    .orb{
+      position:absolute;
+      border-radius:50%;
+      filter:blur(10px);
+      opacity:.4;
+      pointer-events:none;
+      animation:orbFloat 10s ease-in-out infinite;
+    }
+
+    .orb.one{
+      width:150px; height:150px;
+      background:rgba(59,130,246,0.18);
+      top:120px; left:-40px;
+    }
+
+    .orb.two{
+      width:180px; height:180px;
+      background:rgba(124,58,237,0.16);
+      right:-50px; top:420px;
+      animation-delay:1.2s;
+    }
+
+    @keyframes fadeUp{
+      from{ opacity:0; transform:translateY(18px); }
+      to{ opacity:1; transform:none; }
+    }
+
+    @keyframes floatCard{
+      0%,100%{ transform:translateY(0); }
+      50%{ transform:translateY(-8px); }
+    }
+
+    @keyframes gradientShift{
+      0%{ background-position:0% 50%; }
+      100%{ background-position:200% 50%; }
+    }
+
+    @keyframes orbFloat{
+      0%,100%{ transform:translateY(0) scale(1); }
+      50%{ transform:translateY(-18px) scale(1.05); }
+    }
+
+    @media (max-width: 1080px){
+      .hero-grid,
+      .contact-wrap,
+      .features-grid,
+      .community-grid{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .community-grid a:last-child{
+        grid-column:1 / -1;
+      }
+    }
+
+    @media (max-width: 760px){
+      .nav-inner,
+      .hero-grid,
+      .hero-bottom,
+      .panel-grid,
+      .contact-wrap,
+      .features-grid,
+      .community-grid{
+        grid-template-columns:1fr;
+        display:grid;
+      }
+
+      .nav-links{ display:none; }
+      .hero{ padding-top:42px; }
+      .section{ padding:64px 0; }
+      .btn{ width:100%; }
+      .cta-row{ display:grid; }
+      .qr-card{ min-width:0; }
+      h1{ letter-spacing:-1.2px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *, *::before, *::after{
+        animation:none !important;
+        transition:none !important;
+        scroll-behavior:auto !important;
+      }
+      .reveal{ opacity:1; transform:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="Viper Panel home">
+        <div class="brand-mark">V</div>
+        <div>Viper Panel</div>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#community">Community</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          🚀 Support Our App!
+        </div>
+        <h1>Create and manage VPN accounts with <span class="gradient-text">speed and precision</span>.</h1>
+        <p class="hero-copy">Viper Panel is designed for creating and managing VPN accounts quickly and efficiently. It focuses on account generation and panel management.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.viper.panel" target="_blank" rel="noopener noreferrer">Download Panel</a>
+          <a class="btn btn-secondary" href="https://youtu.be/ikGnEH_nmoY?si=SEBvZHkFb0sA1G0v" target="_blank" rel="noopener noreferrer">Watch Tutorial</a>
+        </div>
+      </div>
+
+      <div class="hero-panel reveal">
+        <div class="panel-top">
+          <div>
+            <strong>Quick Access</strong><br />
+            <span class="muted">Everything users need in one place</span>
+          </div>
+          <div class="status-pill">Online</div>
+        </div>
+
+        <div class="panel-grid">
+          
+          </div>
+          <div class="mini-card">
+            <div class="metric">24/7</div>
+            <div class="muted">Community channels available for guidance and updates.</div>
+          </div>
+        </div>
+
+        <div class="hero-bottom">
+          
+          <div class="qr-card">
+            <strong>Scan to download</strong>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.viper.panel" alt="QR code to download Viper Panel app" />
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+
+  <section class="section" id="community">
+    <div class="container">
+      <h2 class="section-title reveal">Join the community</h2>
+      <p class="section-copy reveal">Users can connect through your social and messaging channels for updates, tutorials, support, and announcements.</p>
+
+      <div class="community-grid">
+        <a class="community-card reveal" href="https://t.me/vpnappfreenet" target="_blank" rel="noopener noreferrer">
+          <div class="community-icon">
+            <svg width="26" viewBox="0 0 24 24" fill="#229ED9"><path d="M9.04 15.47l-.39 5.52c.56 0 .8-.24 1.09-.53l2.61-2.5 5.4 3.95c.99.55 1.69.26 1.96-.91l3.56-16.67h.01c.32-1.49-.54-2.08-1.5-1.73L1.4 9.47c-1.45.56-1.43 1.37-.25 1.73l5.42 1.69L19.1 5.7c.59-.38 1.13-.17.69.21"/></svg>
+          </div>
+          <strong>Telegram 1</strong>
+          <p style="margin-top:8px;">Primary updates and community access.</p>
+        </a>
+
+        <a class="community-card reveal" href="https://t.me/ncsvpnsite" target="_blank" rel="noopener noreferrer">
+          <div class="community-icon">
+            <svg width="26" viewBox="0 0 24 24" fill="#229ED9"><path d="M9.04 15.47l-.39 5.52c.56 0 .8-.24 1.09-.53l2.61-2.5 5.4 3.95c.99.55 1.69.26 1.96-.91l3.56-16.67h.01c.32-1.49-.54-2.08-1.5-1.73L1.4 9.47c-1.45.56-1.43 1.37-.25 1.73l5.42 1.69L19.1 5.7c.59-.38 1.13-.17.69.21"/></svg>
+          </div>
+          <strong>Telegram 2</strong>
+          <p style="margin-top:8px;">Additional announcements and support.</p>
+        </a>
+
+        <a class="community-card reveal" href="https://t.me/ncsprovpn" target="_blank" rel="noopener noreferrer">
+          <div class="community-icon">
+            <svg width="26" viewBox="0 0 24 24" fill="#229ED9"><path d="M9.04 15.47l-.39 5.52c.56 0 .8-.24 1.09-.53l2.61-2.5 5.4 3.95c.99.55 1.69.26 1.96-.91l3.56-16.67h.01c.32-1.49-.54-2.08-1.5-1.73L1.4 9.47c-1.45.56-1.43 1.37-.25 1.73l5.42 1.69L19.1 5.7c.59-.38 1.13-.17.69.21"/></svg>
+          </div>
+          <strong>Telegram 3</strong>
+          <p style="margin-top:8px;">More channels for engagement and reach.</p>
+        </a>
+
+        <a class="community-card reveal" href="https://facebook.com/groups/2433009217118591/" target="_blank" rel="noopener noreferrer">
+          <div class="community-icon">
+            <svg width="26" viewBox="0 0 24 24" fill="#1877F2"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.45h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99A10 10 0 0 0 22 12"/></svg>
+          </div>
+          <strong>Facebook</strong>
+          <p style="margin-top:8px;">Reach users on a familiar social platform.</p>
+        </a>
+
+        <a class="community-card reveal" href="https://chat.whatsapp.com/IkqFcDDo4X4868sQB3Ob1c" target="_blank" rel="noopener noreferrer">
+          <div class="community-icon">
+            <svg width="26" viewBox="0 0 24 24" fill="#25D366"><path d="M20.52 3.48A11.8 11.8 0 0 0 12.02 0C5.39 0 .02 5.36.02 11.99c0 2.11.55 4.17 1.6 5.99L0 24l6.17-1.61a11.93 11.93 0 0 0 5.85 1.5h.01c6.63 0 12-5.36 12-11.99 0-3.2-1.25-6.2-3.51-8.42zM12.02 21.4c-1.81 0-3.58-.49-5.12-1.41l-.37-.22-3.66.96.98-3.57-.24-.37a9.4 9.4 0 0 1-1.44-5c0-5.2 4.23-9.43 9.44-9.43 2.52 0 4.89.98 6.67 2.76a9.36 9.36 0 0 1 2.76 6.66c0 5.21-4.23 9.44-9.43 9.44zm5.17-7.07c-.28-.14-1.66-.82-1.91-.91-.25-.09-.43-.14-.61.14-.18.28-.7.91-.86 1.1-.16.18-.32.21-.6.07-.28-.14-1.18-.44-2.25-1.39-.83-.74-1.39-1.66-1.55-1.94-.16-.28-.02-.43.12-.57.13-.13.28-.32.42-.48.14-.16.18-.28.28-.46.09-.18.05-.35-.02-.49-.07-.14-.61-1.47-.84-2.02-.22-.53-.45-.46-.61-.47h-.52c-.18 0-.47.07-.72.35-.25.28-.95.93-.95 2.27 0 1.34.97 2.63 1.1 2.81.14.18 1.9 2.9 4.6 4.06.64.28 1.14.45 1.53.58.64.2 1.22.17 1.68.1.51-.08 1.66-.68 1.89-1.34.23-.65.23-1.21.16-1.34-.07-.14-.25-.21-.53-.35z"/></svg>
+          </div>
+          <strong>WhatsApp</strong>
+          <p style="margin-top:8px;">Direct community support and quick sharing.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="container contact-wrap">
+      
+          
+        </div>
+      </div>
+
+      <div class="form-shell reveal">
+        <h2 style="margin-top:0; font-size:30px; letter-spacing:-1px;">Contact Us</h2>
+        <p>Send us a message and our team will get back to you as soon as possible.</p>
+        <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="1843f458-d572-495d-bc62-29c46df4cbf9" />
+          <input type="hidden" name="subject" value="New Viper Panel Contact Message" />
+          <input type="hidden" name="from_name" value="Viper Panel Website" />
+          <input type="hidden" name="redirect" value="https://link.mindfreak.online/index.html" />
+
+          <div>
+            <label for="name">Name</label>
+            <input id="name" type="text" name="name" placeholder="Enter your name" required />
+          </div>
+
+          <div>
+            <label for="email">Email</label>
+            <input id="email" type="email" name="email" placeholder="Enter your email" required />
+          </div>
+
+          <div>
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="6" placeholder="Write your message here" required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    All rights reserved © 2026 Viper Panel
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+  </script>
+</body>
+</html>
